@@ -1,0 +1,72 @@
+{
+  "name": "@gcp-tools/hono",
+  "author": "si@ibrokethat.com",
+  "description": "GCP Tools | hono",
+  "license": "Apache-2.0",
+  "type": "module",
+  "version": "1.0.1",
+  "exports": {
+    ".": {
+      "default": "./dist/index.mjs",
+      "types": "./dist/index.d.mts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc --pretty",
+    "clean": "rm -rf coverage dist",
+    "lint": "biome check src --write",
+    "prepare": "husky",
+    "release": "semantic-release",
+    "test": "jest --config jest.config.mjs --passWithNoTests"
+  },
+  "dependencies": {
+    "@google-cloud/firestore": "^7.11.6",
+    "@google-cloud/logging-bunyan": "^5.1.0",
+    "@hono/node-server": "^1.19.5",
+    "@hono/zod-validator": "^0.7.3",
+    "bunyan": "^1.8.15",
+    "exponential-backoff": "^3.1.2",
+    "hono": "^4.9.10",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.8.1",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.0",
+    "@semantic-release/exec": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^10.0.6",
+    "@semantic-release/npm": "^12.0.1",
+    "@semantic-release/release-notes-generator": "^14.0.0",
+    "@types/bunyan": "^1.8.11",
+    "@types/express": "^5.0.3",
+    "@types/jest": "^29.5.11",
+    "@types/node": "^20.14.2",
+    "conventional-changelog-conventionalcommits": "^8.0.0",
+    "husky": "^9.0.10",
+    "lint-staged": "^15.2.2",
+    "semantic-release": "^24.0.0",
+    "ts-node": "10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=22",
+    "npm": ">=10.5.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:gcp-tools/hono.git"
+  },
+  "lint-staged": {
+    "*": [
+      "biome check --no-errors-on-unmatched --files-ignore-unknown=true write"
+    ]
+  }
+}
