@@ -29,7 +29,7 @@ export type RepoContext = {
 
 export type ServicesContext = {
   // biome-ignore lint/suspicious/noExplicitAny: it doesn't care about the type at this juncture
-  readonly serviceFns: Record<string, ServiceFn<any, any, any>>
+  readonly serviceFns: Record<string, ServiceFn<any, any>>
   readonly services: Record<string, unknown>
 }
 
@@ -102,13 +102,13 @@ export type MakeServiceIoFn = <A, R>(
   logger: Logger,
 ) => RunIOFn<A, IOResponse<R>>
 
-export type ServiceFn<E, A, R> = (
+export type ServiceFn<A, R> = (
   ctx: RequestContext,
   logger: Logger,
 ) => IOFn<A, R>
 
 // biome-ignore lint/suspicious/noExplicitAny: it doesn't care about the type at this juncture
-export type WrappedServiceFn<F extends ServiceFn<any, any, any>> = (
+export type WrappedServiceFn<F extends ServiceFn<any, any>> = (
   args: Parameters<ReturnType<F>>[0],
 ) => Promise<IOResponse<Awaited<ReturnType<ReturnType<F>>>>>
 
