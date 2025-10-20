@@ -1,10 +1,10 @@
 import type { ContentfulStatusCode } from 'hono/utils/http-status'
 import type { CmdResponse } from './types.mjs'
 
-export const response = (
-  result: CmdResponse<unknown>,
+export const response = <T,>(
+  result: CmdResponse<T>,
   status: ContentfulStatusCode = 200,
-): [unknown, ContentfulStatusCode] => {
+): [T | { code: string; message: string }, ContentfulStatusCode] => {
   switch (result.code) {
     case 'CMD_SUCCESS':
       return [result.data, status]
