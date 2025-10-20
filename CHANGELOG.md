@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.1.0](https://github.com/gcp-tools/hono/compare/v1.0.0...v1.1.0) (2025-10-20)
+
+### Features
+
+* simplifies service setup for hono client ([03f724a](https://github.com/gcp-tools/hono/commit/03f724a450653ab351525f9d2a440eddd1a1b184))
+
+### Bug Fixes
+
+* broken build ([ff43130](https://github.com/gcp-tools/hono/commit/ff431304b3ee4112b85eb8cc7bd0e0e77cbafaa2))
+
 ## 1.0.0 (2025-10-10)
 
 ### Features
