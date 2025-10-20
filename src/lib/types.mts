@@ -103,7 +103,6 @@ export type MakeServiceIoFn = <A, R>(
 ) => RunIOFn<A, IOResponse<R>>
 
 export type ServiceFn<E, A, R> = (
-  env: E,
   ctx: RequestContext,
   logger: Logger,
 ) => IOFn<A, R>
