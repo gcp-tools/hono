@@ -135,3 +135,36 @@ export type CommandFn<A, R, Re = null, Se = null> = (
 export type WrappedCommandFn<F extends CommandFn<any, any, any, any>> = (
   args: Parameters<ReturnType<F>>[0],
 ) => Promise<Awaited<ReturnType<ReturnType<F>>>>
+
+// HTTP Response discriminated union types
+export type SuccessResponse<T> = {
+  code: 'SUCCESS'
+  data: T
+}
+
+export type NotFoundResponse = {
+  code: 'NOT_FOUND'
+  data: { message: string }
+}
+
+export type ConflictResponse = {
+  code: 'CONFLICT'
+  data: { message: string }
+}
+
+export type InternalServerErrorResponse = {
+  code: 'INTERNAL_SERVER_ERROR'
+  data: { message: string }
+}
+
+export type ServiceUnavailableResponse = {
+  code: 'SERVICE_UNAVAILABLE'
+  data: { message: string }
+}
+
+export type HttpResponse<T> =
+  | SuccessResponse<T>
+  | NotFoundResponse
+  | ConflictResponse
+  | InternalServerErrorResponse
+  | ServiceUnavailableResponse
