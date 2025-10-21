@@ -19,17 +19,14 @@ export const isResourceExhaustedError = (
   error.message?.includes('quota exceeded')
 
 export const makeFirestoreIOFn =
-  <A, R>(fn: (args: A) => Promise<Result<R>>, logger: Logger) =>
+  <A, R>(fn: (args: A) => Promise<R>, logger: Logger) =>
   async (args: A): Promise<Result<R>> => {
     try {
-      const result = await backOff(() => fn(args), {
+      const data = await backOff(() => fn(args), {
         ...options,
-        retry: (error) => {
-          // Only retry resource exhausted errors, not business logic errors
-          return isResourceExhaustedError(error)
-        },
+        retry: isResourceExhaustedError,
       })
-      return result
+      return { ok: true, value: data }
     } catch (cause) {
       logger.error({ error: cause }, '[firestore-io] error')
       if (cause instanceof ZodError) {

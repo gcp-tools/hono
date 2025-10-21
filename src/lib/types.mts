@@ -62,7 +62,7 @@ export type FirestoreRepoFn<A, R> = (
   db: Firestore,
   ctx: RequestContext,
   logger: Logger,
-) => (args: A) => Promise<Result<R>>
+) => (args: A) => Promise<R>
 
 // biome-ignore lint/suspicious/noExplicitAny: it doesn't care about the type at this juncture
 export type WrappedFirestoreRepoFn<F extends FirestoreRepoFn<any, any>> =
@@ -74,7 +74,7 @@ export type WrappedFirestoreRepoFn<F extends FirestoreRepoFn<any, any>> =
 export type ServiceFn<A, R> = (
   ctx: RequestContext,
   logger: Logger,
-) => (args: A) => Promise<Result<R>>
+) => (args: A) => Promise<R>
 
 // biome-ignore lint/suspicious/noExplicitAny: it doesn't care about the type at this juncture
 export type WrappedServiceFn<F extends ServiceFn<any, any>> =
