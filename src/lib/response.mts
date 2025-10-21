@@ -4,7 +4,7 @@ import type { CmdResponse } from './types.mjs'
 export const response = <T,>(
   result: CmdResponse<T>,
   status: ContentfulStatusCode = 200,
-): [{ code: string; data: T | string }, ContentfulStatusCode] => {
+): [{ code: string; data: T | { message: string } }, ContentfulStatusCode] => {
   switch (result.code) {
     case 'CMD_SUCCESS':
       return [
@@ -18,7 +18,7 @@ export const response = <T,>(
       return [
         {
           code: result.code,
-          data: result.message,
+          data: { message: result.message },
         },
         404,
       ]
@@ -26,7 +26,7 @@ export const response = <T,>(
       return [
         {
           code: result.code,
-          data: result.message,
+          data: { message: result.message },
         },
         409,
       ]
@@ -34,7 +34,7 @@ export const response = <T,>(
       return [
         {
           code: 'INTERNAL_SERVER_ERROR',
-          data: 'An unexpected error occurred',
+          data: { message: 'An unexpected error occurred' },
         },
         500,
       ]
@@ -42,7 +42,7 @@ export const response = <T,>(
       return [
         {
           code: result.code,
-          data: 'The service is temporarily unavailable',
+          data: { message: 'The service is temporarily unavailable' },
         },
         503,
       ]
@@ -50,7 +50,7 @@ export const response = <T,>(
       return [
         {
           code: 'INTERNAL_SERVER_ERROR',
-          data: 'An unexpected error occurred',
+          data: { message: 'An unexpected error occurred' },
         },
         500,
       ]
