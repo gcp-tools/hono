@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.5.0](https://github.com/gcp-tools/hono/compare/v1.4.0...v1.5.0) (2025-10-21)
+
+### Features
+
+* better discriminated union ([be2a5ca](https://github.com/gcp-tools/hono/commit/be2a5caf5fbf9b75086e443cf9ce2cbb632ca92f))
+
 ## [1.4.0](https://github.com/gcp-tools/hono/compare/v1.3.0...v1.4.0) (2025-10-21)
 
 ### Features
