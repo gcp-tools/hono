@@ -1,6 +1,5 @@
 import { backOff } from 'exponential-backoff'
 import { DetailedError } from 'hono/client'
-import type { Logger } from './logger.mjs'
 import type { MakeServiceIoFn } from './types.mjs'
 
 const options = {
@@ -41,8 +40,7 @@ export const isServiceUnavailableError = (
   return false
 }
 export const makeServiceIOFn: MakeServiceIoFn =
-  (fn, logger) =>
-  async (args) => {
+  (fn, logger) => async (args) => {
     try {
       const data = await backOff(() => fn(args), {
         ...options,
