@@ -1,6 +1,7 @@
 import { backOff } from 'exponential-backoff'
 import { ZodError } from 'zod'
-import type { MakeFirestoreIoFn } from './types.mjs'
+import type { Logger } from './logger.mjs'
+import type { Result } from './types.mjs'
 
 const options = {
   numOfAttempts: 5,
@@ -17,32 +18,39 @@ export const isResourceExhaustedError = (
   error.message?.includes('RESOURCE_EXHAUSTED') ||
   error.message?.includes('quota exceeded')
 
-export const makeFirestoreIOFn: MakeFirestoreIoFn =
-  (fn, logger) => async (args) => {
+export const makeFirestoreIOFn =
+  <A, R>(fn: (args: A) => Promise<Result<R>>, logger: Logger) =>
+  async (args: A): Promise<Result<R>> => {
     try {
-      const data = await backOff(() => fn(args), {
+      const result = await backOff(() => fn(args), {
         ...options,
-        retry: isResourceExhaustedError,
+        retry: (error) => {
+          // Only retry resource exhausted errors, not business logic errors
+          return isResourceExhaustedError(error)
+        },
       })
-      return {
-        code: 'IO_SUCCESS',
-        data,
-      }
-    } catch (error) {
-      logger.error({ error }, '[firestore-io] error')
-      if (error instanceof ZodError) {
+      return result
+    } catch (cause) {
+      logger.error({ error: cause }, '[firestore-io] error')
+      if (cause instanceof ZodError) {
         return {
-          cause: error,
-          code: 'VALIDATION_ERROR',
-          data: args,
-          message: 'Firestore data validation error',
+          ok: false,
+          error: {
+            cause,
+            code: 'VALIDATION_ERROR',
+            data: args,
+            message: 'Firestore data validation error',
+          },
         }
       }
       return {
-        cause: error,
-        code: 'SERVICE_UNAVAILABLE',
-        data: args,
-        message: error instanceof Error ? error.message : 'Unknown error',
+        ok: false,
+        error: {
+          cause,
+          code: 'SERVICE_UNAVAILABLE',
+          data: args,
+          message: cause instanceof Error ? cause.message : 'Unknown error',
+        },
       }
     }
   }

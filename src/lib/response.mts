@@ -1,33 +1,34 @@
 import type { ContentfulStatusCode } from 'hono/utils/http-status'
-import type { CmdResponse } from './types.mjs'
-import type { HttpResponse } from './types.mjs'
+import type { HttpResponse, Result } from './types.mjs'
 
 export const response = <T,>(
-  result: CmdResponse<T>,
+  result: Result<T>,
   status: ContentfulStatusCode = 200,
 ): [HttpResponse<T>, ContentfulStatusCode] => {
-  switch (result.code) {
-    case 'CMD_SUCCESS':
-      return [
-        {
-          code: 'SUCCESS',
-          data: result.data,
-        },
-        status,
-      ]
+  if (result.ok) {
+    return [
+      {
+        code: 'SUCCESS',
+        data: result.value,
+      },
+      status,
+    ]
+  }
+
+  switch (result.error.code) {
     case 'NOT_FOUND':
       return [
         {
-          code: result.code,
-          data: { message: result.message },
+          code: result.error.code,
+          data: { message: result.error.message },
         },
         404,
       ]
     case 'CONFLICT':
       return [
         {
-          code: result.code,
-          data: { message: result.message },
+          code: result.error.code,
+          data: { message: result.error.message },
         },
         409,
       ]
@@ -42,7 +43,7 @@ export const response = <T,>(
     case 'SERVICE_UNAVAILABLE':
       return [
         {
-          code: result.code,
+          code: result.error.code,
           data: { message: 'The service is temporarily unavailable' },
         },
         503,

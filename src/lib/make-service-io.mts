@@ -1,6 +1,7 @@
 import { backOff } from 'exponential-backoff'
 import { DetailedError } from 'hono/client'
-import type { MakeServiceIoFn } from './types.mjs'
+import type { Logger } from './logger.mjs'
+import type { Result } from './types.mjs'
 
 const options = {
   numOfAttempts: 5,
@@ -39,45 +40,56 @@ export const isServiceUnavailableError = (
 
   return false
 }
-export const makeServiceIOFn: MakeServiceIoFn =
-  (fn, logger) => async (args) => {
-    try {
-      const data = await backOff(() => fn(args), {
-        ...options,
-        retry: isServiceUnavailableError,
-      })
-      return {
-        code: 'IO_SUCCESS',
-        data,
-      }
-    } catch (error) {
-      logger.error({ error }, '[service-io] error')
 
-      const isServiceUnavailable = isServiceUnavailableError(error)
+export const makeServiceIOFn =
+  <A, R>(fn: (args: A) => Promise<Result<R>>, logger: Logger) =>
+  async (args: A): Promise<Result<R>> => {
+    try {
+      const result = await backOff(() => fn(args), {
+        ...options,
+        retry: (error) => {
+          // Only retry service unavailable errors, not business logic errors
+          return isServiceUnavailableError(error)
+        },
+      })
+      return result
+    } catch (cause) {
+      logger.error({ error: cause }, '[service-io] error')
+
+      const isServiceUnavailable = isServiceUnavailableError(cause)
       if (isServiceUnavailable) {
         return {
-          cause: error,
-          code: 'SERVICE_UNAVAILABLE',
-          data: args,
-          message: 'Service unavailable',
+          ok: false,
+          error: {
+            cause,
+            code: 'SERVICE_UNAVAILABLE',
+            data: args,
+            message: 'Service unavailable',
+          },
         }
       }
 
-      if (error instanceof DetailedError) {
+      if (cause instanceof DetailedError) {
         return {
-          cause: error,
-          code: 'VALIDATION_ERROR',
-          data: args,
-          message: error.message,
+          ok: false,
+          error: {
+            cause,
+            code: 'VALIDATION_ERROR',
+            data: args,
+            message: cause.message,
+          },
         }
       }
 
       return {
-        cause: error,
-        code: 'SERVICE_UNAVAILABLE',
-        data: args,
-        message:
-          error instanceof Error ? error.message : 'Unknown service error',
+        ok: false,
+        error: {
+          cause,
+          code: 'SERVICE_UNAVAILABLE',
+          data: args,
+          message:
+            cause instanceof Error ? cause.message : 'Unknown service error',
+        },
       }
     }
   }
