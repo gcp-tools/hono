@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.4.0](https://github.com/gcp-tools/hono/compare/v1.3.0...v1.4.0) (2025-10-21)
+
+### Features
+
+* better generics ([3aef4b9](https://github.com/gcp-tools/hono/commit/3aef4b9aa7ee29fa71b65f1a7205dccf2f0a73cd))
+
 ## [1.3.0](https://github.com/gcp-tools/hono/compare/v1.2.0...v1.3.0) (2025-10-21)
 
 ### Features
