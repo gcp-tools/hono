@@ -1,5 +1,5 @@
 import { backOff } from 'exponential-backoff'
-import { ZodError } from 'zod'
+import { DetailedError } from 'hono/client'
 import type { Logger } from './logger.mjs'
 import type { MakeServiceIoFn } from './types.mjs'
 
@@ -40,10 +40,9 @@ export const isServiceUnavailableError = (
 
   return false
 }
-
 export const makeServiceIOFn: MakeServiceIoFn =
-  <A, R>(fn: (args: A) => Promise<R>, logger: Logger) =>
-  async (args: A) => {
+  (fn, logger) =>
+  async (args) => {
     try {
       const data = await backOff(() => fn(args), {
         ...options,
@@ -55,21 +54,9 @@ export const makeServiceIOFn: MakeServiceIoFn =
       }
     } catch (error) {
       logger.error({ error }, '[service-io] error')
-      if (error instanceof ZodError) {
-        return {
-          cause: error,
-          code: 'VALIDATION_ERROR',
-          data: args,
-          message: 'Service data validation error',
-        }
-      }
 
-      if (
-        error &&
-        typeof error === 'object' &&
-        'status' in error &&
-        'message' in error
-      ) {
+      const isServiceUnavailable = isServiceUnavailableError(error)
+      if (isServiceUnavailable) {
         return {
           cause: error,
           code: 'SERVICE_UNAVAILABLE',
@@ -78,17 +65,12 @@ export const makeServiceIOFn: MakeServiceIoFn =
         }
       }
 
-      if (
-        error &&
-        typeof error === 'object' &&
-        'code' in error &&
-        'message' in error
-      ) {
+      if (error instanceof DetailedError) {
         return {
           cause: error,
-          code: 'SERVICE_UNAVAILABLE',
+          code: 'VALIDATION_ERROR',
           data: args,
-          message: 'Connection failed',
+          message: error.message,
         }
       }
 
