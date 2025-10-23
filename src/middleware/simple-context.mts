@@ -5,6 +5,7 @@ export type SimpleContext = {
   ctx: {
     userId: string
     correlationId: string
+    role: string
   }
 }
 
@@ -52,6 +53,7 @@ export const simpleContext = createMiddleware<{ Variables: SimpleContext }>(
     c.set('ctx', {
       userId: result.data['x-user-id'],
       correlationId: result.data['x-correlation-id'],
+      role: 'system',
     })
 
     await next()
