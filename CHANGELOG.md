@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.8.0](https://github.com/gcp-tools/hono/compare/v1.7.0...v1.8.0) (2025-10-23)
+
+### Features
+
+* add simpleContext middleware for internal services ([8337aad](https://github.com/gcp-tools/hono/commit/8337aad876f5c1e246775fa29c19d0e730757dd8))
+
 ## [1.7.0](https://github.com/gcp-tools/hono/compare/v1.6.0...v1.7.0) (2025-10-21)
 
 ### Features
