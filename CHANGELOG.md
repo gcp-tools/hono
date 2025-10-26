@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.9.1](https://github.com/gcp-tools/hono/compare/v1.9.0...v1.9.1) (2025-10-26)
+
+### Bug Fixes
+
+* unifies result type across io functions ([c2a072b](https://github.com/gcp-tools/hono/commit/c2a072b4f3fb5d674d6d56175a6ae78c3f426639))
+
 ## [1.9.0](https://github.com/gcp-tools/hono/compare/v1.8.0...v1.9.0) (2025-10-23)
 
 ### Features
