@@ -1,5 +1,7 @@
+export * from './firebase-admin.mjs'
 export * from './firestore.mjs'
 export * from './logger.mjs'
+export * from './make-firebase-auth-io.mjs'
 export * from './make-firestore-io.mjs'
 export * from './make-service-io.mjs'
 export * from './result-to-response.mjs'

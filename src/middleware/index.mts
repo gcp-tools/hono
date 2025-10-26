@@ -1,6 +1,7 @@
 export * from './context.mjs'
 export * from './error-handler.mjs'
 export * from './init-commands.mjs'
+export * from './init-firebase-auth.mjs'
 export * from './init-firestore-repo.mjs'
 export * from './init-services.mjs'
 export * from './logger.mjs'

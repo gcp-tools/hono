@@ -6,9 +6,17 @@ export const initServices = <E,>() =>
   createMiddleware<{
     Variables: RequestWithContext<E> & ServicesContext
   }>(async (c, next) => {
+    const serviceFns = c.get('serviceFns')
+
+    // Skip if no services functions defined
+    if (!serviceFns) {
+      c.set('services', {})
+      await next()
+      return
+    }
+
     const ctx = c.get('ctx')
     const logger = c.get('logger')
-    const serviceFns = c.get('serviceFns')
 
     const services = Object.fromEntries(
       Object.entries(serviceFns).map(([key, fn]) => [

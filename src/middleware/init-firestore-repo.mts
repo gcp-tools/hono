@@ -6,10 +6,17 @@ export const initFirestoreRepo = <E,>() =>
   createMiddleware<{
     Variables: RequestWithContext<E> & RepoContext
   }>(async (c, next) => {
+    const repoFns = c.get('repoFns')
+
+    // Skip if no repo functions defined
+    if (!repoFns) {
+      c.set('repo', {})
+      await next()
+      return
+    }
     const ctx = c.get('ctx')
     const db = c.get('db')
     const logger = c.get('logger')
-    const repoFns = c.get('repoFns')
 
     const repo = Object.fromEntries(
       Object.entries(repoFns).map(([key, fn]) => [

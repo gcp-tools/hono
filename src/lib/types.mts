@@ -1,11 +1,14 @@
 import type { Firestore } from '@google-cloud/firestore'
+import type { auth } from 'firebase-admin'
 import type { Logger } from './logger.mjs'
 
+export type Auth = auth.Auth
 // Application dependencies available in Hono context
 export type BaseContext<E> = {
   readonly env: E
   readonly logger: Logger
   readonly db: Firestore
+  readonly authClient?: Auth
 }
 
 // Request context extracted from headers and JWT
@@ -35,9 +38,16 @@ export type ServicesContext = {
   readonly services: Record<string, (args: any) => Promise<Result<any>>>
 }
 
+export type AuthContext = {
+  // biome-ignore lint/suspicious/noExplicitAny: it doesn't care about the type at this juncture
+  readonly authFns?: Record<string, FirebaseAuthFn<any, any>>
+  // biome-ignore lint/suspicious/noExplicitAny: generic record of wrapped functions
+  readonly auth?: Record<string, (args: any) => Promise<Result<any>>>
+}
+
 export type CmdsContext = {
   // biome-ignore lint/suspicious/noExplicitAny: it doesn't care about the type at this juncture
-  readonly cmdFns: Record<string, CommandFn<any, any, any, any>>
+  readonly cmdFns: Record<string, CommandFn<any, any, any, any, any>>
   // biome-ignore lint/suspicious/noExplicitAny: generic record of wrapped functions
   readonly cmds: Record<string, (args: any) => Promise<Result<any>>>
 }
@@ -45,6 +55,7 @@ export type CmdsContext = {
 export type AppContext<E> = RequestWithContext<E> &
   RepoContext &
   ServicesContext &
+  AuthContext &
   CmdsContext
 
 // Unified Result type system
@@ -90,17 +101,30 @@ export type WrappedServiceFn<F extends ServiceFn<any, any>> =
     ? (args: A) => Promise<Result<R>>
     : never
 
-// Command functions
-export type CommandFn<A, R, Re = null, Se = null> = (
-  deps: { repo: Re; services: Se },
+// Firebase Auth functions
+export type FirebaseAuthFn<A, R> = (
+  auth: Auth,
   ctx: RequestContext,
   logger: Logger,
 ) => (args: A) => Promise<Result<R>>
 
 // biome-ignore lint/suspicious/noExplicitAny: it doesn't care about the type at this juncture
-export type WrappedCommandFn<F extends CommandFn<any, any, any, any>> =
+export type WrappedFirebaseAuthFn<F extends FirebaseAuthFn<any, any>> =
+  F extends FirebaseAuthFn<infer A, infer R>
+    ? (args: A) => Promise<Result<R>>
+    : never
+
+// Command functions
+export type CommandFn<A, R, Re = null, Se = null, Au = null> = (
+  deps: { repo: Re; services: Se; auth: Au },
+  ctx: RequestContext,
+  logger: Logger,
+) => (args: A) => Promise<Result<R>>
+
+// biome-ignore lint/suspicious/noExplicitAny: it doesn't care about the type at this juncture
+export type WrappedCommandFn<F extends CommandFn<any, any, any, any, any>> =
   // biome-ignore lint/suspicious/noExplicitAny: it doesn't care about the type at this juncture
-  F extends CommandFn<infer A, infer R, any, any>
+  F extends CommandFn<infer A, infer R, any, any, any>
     ? (args: A) => Promise<Result<R>>
     : never
 
