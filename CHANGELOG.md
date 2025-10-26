@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.10.1](https://github.com/gcp-tools/hono/compare/v1.10.0...v1.10.1) (2025-10-26)
+
+### Bug Fixes
+
+* adds firebase auth config ([bdde0b0](https://github.com/gcp-tools/hono/commit/bdde0b0759b5a0e8abb14c5685657e78a99e29fc))
+
 ## [1.10.0](https://github.com/gcp-tools/hono/compare/v1.9.1...v1.10.0) (2025-10-26)
 
 ### Features
