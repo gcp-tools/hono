@@ -1,7 +1,7 @@
 import type { ContentfulStatusCode } from 'hono/utils/http-status'
 import type { HttpResponse, Result } from './types.mjs'
 
-export const response = <T,>(
+export const resultToResponse = <T,>(
   result: Result<T>,
   status: ContentfulStatusCode = 200,
 ): [HttpResponse<T>, ContentfulStatusCode] => {

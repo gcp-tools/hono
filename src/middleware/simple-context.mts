@@ -25,10 +25,8 @@ export const simpleContext = createMiddleware<{ Variables: SimpleContext }>(
   async (c, next) => {
     // Validate headers with Zod
     const headersSchema = z.object({
-      'x-user-id': z.string().uuid('x-user-id must be a valid UUID'),
-      'x-correlation-id': z
-        .string()
-        .uuid('x-correlation-id must be a valid UUID'),
+      'x-user-id': z.uuid('x-user-id must be a valid UUID'),
+      'x-correlation-id': z.uuid('x-correlation-id must be a valid UUID'),
     })
 
     const result = headersSchema.safeParse({

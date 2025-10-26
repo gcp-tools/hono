@@ -48,10 +48,18 @@ export type AppContext<E> = RequestWithContext<E> &
   CmdsContext
 
 // Unified Result type system
-export type Result<T> = { ok: true; value: T } | { ok: false; error: AppError }
+export type Ok<T> = { ok: true; value: T }
+export type Err = { ok: false; error: AppError }
+export type Result<T> = Ok<T> | Err
 
 export type AppError = {
-  code: 'NOT_FOUND' | 'CONFLICT' | 'SERVICE_UNAVAILABLE' | 'VALIDATION_ERROR'
+  code:
+    | 'NOT_FOUND'
+    | 'CONFLICT'
+    | 'SERVICE_UNAVAILABLE'
+    | 'VALIDATION_ERROR'
+    | 'UNAUTHORIZED'
+    | 'FORBIDDEN'
   message: string
   cause?: Error | unknown
   data?: unknown
