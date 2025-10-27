@@ -21,14 +21,14 @@ export type ErrorResponse = {
 
 /**
  * Convert Result to properly typed HTTP response
- * 
+ *
  * Success responses use envelope { code: 'SUCCESS', data: T } for future extensibility
  * Error responses use simple { message: string } format
- * 
+ *
  * @param result - Result from command/repository
  * @param successStatus - HTTP status code for success (default 200)
  * @returns Function that takes Context and returns typed response
- * 
+ *
  * @example
  * const result = await createOrganisation(data)
  * return resultToResponse(result, 201)(c)
@@ -90,7 +90,7 @@ export const resultToResponse = <T,>(
 /**
  * Legacy version for backward compatibility
  * Returns tuple format instead of function
- * 
+ *
  * @deprecated Use new resultToResponse that returns function
  */
 export const resultToResponseLegacy = <T,>(
@@ -98,10 +98,7 @@ export const resultToResponseLegacy = <T,>(
   status: ContentfulStatusCode = 200,
 ): [SuccessEnvelope<T> | ErrorResponse, ContentfulStatusCode] => {
   if (result.ok) {
-    return [
-      { code: 'SUCCESS', data: result.value },
-      status,
-    ]
+    return [{ code: 'SUCCESS', data: result.value }, status]
   }
 
   switch (result.error.code) {
@@ -121,4 +118,3 @@ export const resultToResponseLegacy = <T,>(
       return [{ message: 'An unexpected error occurred' }, 500]
   }
 }
-
