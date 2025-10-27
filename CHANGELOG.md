@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.10.2](https://github.com/gcp-tools/hono/compare/v1.10.1...v1.10.2) (2025-10-27)
+
+### Bug Fixes
+
+* reconfigures htpp response types for better type safety. hopefully. ([2a942f6](https://github.com/gcp-tools/hono/commit/2a942f66e65266183469a79f81d973bfe098b61f))
+
 ## [1.10.1](https://github.com/gcp-tools/hono/compare/v1.10.0...v1.10.1) (2025-10-26)
 
 ### Bug Fixes
