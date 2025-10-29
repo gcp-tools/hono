@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.11.0](https://github.com/gcp-tools/hono/compare/v1.10.2...v1.11.0) (2025-10-29)
+
+### Features
+
+* improves rbac ([c1c549f](https://github.com/gcp-tools/hono/commit/c1c549f9829624cb3b8fc14f8bf5785d83c9ac29))
+
 ## [1.10.2](https://github.com/gcp-tools/hono/compare/v1.10.1...v1.10.2) (2025-10-27)
 
 ### Bug Fixes
