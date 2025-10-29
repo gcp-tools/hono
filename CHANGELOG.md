@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.11.1](https://github.com/gcp-tools/hono/compare/v1.11.0...v1.11.1) (2025-10-29)
+
+### Bug Fixes
+
+* updates exports ([6f24606](https://github.com/gcp-tools/hono/commit/6f246060bbb4edc1028665b70afe84e94c41d451))
+
 ## [1.11.0](https://github.com/gcp-tools/hono/compare/v1.10.2...v1.11.0) (2025-10-29)
 
 ### Features
