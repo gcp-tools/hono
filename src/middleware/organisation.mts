@@ -8,7 +8,13 @@ export const organisationType = (organisationTypes: string[]) =>
       !ctx.organisationType ||
       !organisationTypes.includes(ctx.organisationType)
     ) {
-      return c.json({ error: 'Organisation type not supported' }, 400)
+      return c.json(
+        { 
+          code: 'FORBIDDEN',
+          message: 'Organisation type not supported'
+        },
+        403,
+      )
     }
     await next()
   })
