@@ -6,6 +6,7 @@ export type SimpleContext = {
     userId: string
     correlationId: string
     role: string
+    tenantId?: string
   }
 }
 
@@ -15,23 +16,25 @@ export type SimpleContext = {
  * Requirements:
  * - x-user-id: Required UUID (user making the request, passed from calling service)
  * - x-correlation-id: Required UUID (for distributed tracing)
+ * - x-tenant-id: Optional UUID (tenant ID, passed from calling service)
+ * - x-role: Required string (role of the user making the request, passed from calling service)
  *
- * This middleware is designed for internal services that don't need role-based
- * access control but need to maintain audit trails and trace context.
- *
- * Both headers are required and must be valid UUIDs.
  */
 export const simpleContext = createMiddleware<{ Variables: SimpleContext }>(
   async (c, next) => {
     // Validate headers with Zod
     const headersSchema = z.object({
-      'x-user-id': z.uuid('x-user-id must be a valid UUID'),
+      'x-role': z.string('x-role must be a valid string'),
       'x-correlation-id': z.uuid('x-correlation-id must be a valid UUID'),
+      'x-user-id': z.uuid('x-user-id must be a valid UUID'),
+      'x-tenant-id': z.uuid('x-tenant-id must be a valid UUID').optional(),
     })
 
     const result = headersSchema.safeParse({
-      'x-user-id': c.req.header('x-user-id'),
+      'x-role': c.req.header('x-role'),
       'x-correlation-id': c.req.header('x-correlation-id'),
+      'x-tenant-id': c.req.header('x-tenant-id'),
+      'x-user-id': c.req.header('x-user-id'),
     })
 
     if (!result.success) {
@@ -49,9 +52,10 @@ export const simpleContext = createMiddleware<{ Variables: SimpleContext }>(
 
     // Set context object
     c.set('ctx', {
-      userId: result.data['x-user-id'],
       correlationId: result.data['x-correlation-id'],
-      role: 'system',
+      role: result.data['x-role'],
+      tenantId: result.data['x-tenant-id'],
+      userId: result.data['x-user-id'],
     })
 
     await next()

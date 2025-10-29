@@ -24,9 +24,11 @@ const firstHeader = (
 
 const claimsSchema = z.object({
   claims: z.object({
-    user_id: z.string(),
-    sub: z.string(),
+    organisation_type: z.string(),
     role: z.string(),
+    sub: z.string(),
+    tenant_id: z.string(),
+    user_id: z.string(),
   }),
 })
 
@@ -67,8 +69,10 @@ export const context = createMiddleware<{
 
   const ctx: RequestContext = {
     correlationId,
+    organisationType: claimsResult.data.organisation_type,
     role: claimsResult.data.role,
     userId: claimsResult.data.user_id,
+    tenantId: claimsResult.data.tenant_id,
   }
 
   c.set('ctx', ctx)

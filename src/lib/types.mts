@@ -16,6 +16,8 @@ export type RequestContext = {
   readonly correlationId: string
   readonly role: string
   readonly userId: string
+  readonly tenantId?: string
+  readonly organisationType?: string
 }
 
 // Extended context with request context
