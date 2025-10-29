@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.12.1](https://github.com/gcp-tools/hono/compare/v1.12.0...v1.12.1) (2025-10-29)
+
+### Chores
+
+* adds import that was incorrectly removed ([342ab78](https://github.com/gcp-tools/hono/commit/342ab781d31574d787e24163ff14b5a60c281009))
+
 ## [1.12.0](https://github.com/gcp-tools/hono/compare/v1.11.1...v1.12.0) (2025-10-29)
 
 ### Features
