@@ -22,7 +22,7 @@ export type TenantContext = SimpleContext & {
 }
 
 export type RequestContext = TenantContext & {
-  readonly organisationType?: string
+  readonly organisationType: string
 }
 
 // export type RequestContext = {
