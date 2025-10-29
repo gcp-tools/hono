@@ -11,14 +11,27 @@ export type BaseContext<E> = {
   readonly authClient?: Auth
 }
 
-// Request context extracted from headers and JWT
-export type RequestContext = {
+export type SimpleContext = {
   readonly correlationId: string
   readonly role: string
   readonly userId: string
-  readonly tenantId?: string
+}
+
+export type TenantContext = SimpleContext & {
+  readonly tenantId: string
+}
+
+export type RequestContext = TenantContext & {
   readonly organisationType?: string
 }
+
+// export type RequestContext = {
+//   readonly correlationId: string
+//   readonly role: string
+//   readonly userId: string
+//   readonly tenantId?: string
+//   readonly organisationType?: string
+// }
 
 // Extended context with request context
 export type RequestWithContext<E> = BaseContext<E> & {

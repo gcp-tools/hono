@@ -19,6 +19,8 @@ export const requestLogger = createMiddleware<{
     path: c.req.path,
     role: ctx.role,
     userId: ctx.userId,
+    tenantId: ctx.tenantId,
+    organisationType: ctx.organisationType,
   })
 
   c.set('requestLogger', requestLogger)
