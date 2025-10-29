@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.12.0](https://github.com/gcp-tools/hono/compare/v1.11.1...v1.12.0) (2025-10-29)
+
+### Features
+
+* improves contexts ([d530f9a](https://github.com/gcp-tools/hono/commit/d530f9ab833894435efd624fe817583156ae2d71))
+
 ## [1.11.1](https://github.com/gcp-tools/hono/compare/v1.11.0...v1.11.1) (2025-10-29)
 
 ### Bug Fixes
