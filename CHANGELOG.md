@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.13.0](https://github.com/gcp-tools/hono/compare/v1.12.1...v1.13.0) (2025-10-29)
+
+### Features
+
+* better claims ([480efd8](https://github.com/gcp-tools/hono/commit/480efd8f7ce4adcb9b138cc07a69bd92210b47ad))
+
 ## [1.12.1](https://github.com/gcp-tools/hono/compare/v1.12.0...v1.12.1) (2025-10-29)
 
 ### Chores
