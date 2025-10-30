@@ -16,7 +16,7 @@ export const initFirestoreRepo = <E,>() =>
     }
     const ctx = c.get('ctx')
     const db = c.get('db')
-    const logger = c.get('logger')
+    const logger = c.get('requestLogger')
 
     const repo = Object.fromEntries(
       Object.entries(repoFns).map(([key, fn]) => [

@@ -6,7 +6,7 @@ export const initCommands = <E,>() =>
     Variables: AppContext<E>
   }>(async (c, next) => {
     const ctx = c.get('ctx')
-    const logger = c.get('logger')
+    const logger = c.get('requestLogger')
     const repo = c.get('repo')
     const services = c.get('services')
     const auth = c.get('auth')

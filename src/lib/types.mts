@@ -25,14 +25,6 @@ export type RequestContext = TenantContext & {
   readonly organisationType: string
 }
 
-// export type RequestContext = {
-//   readonly correlationId: string
-//   readonly role: string
-//   readonly userId: string
-//   readonly tenantId?: string
-//   readonly organisationType?: string
-// }
-
 // Extended context with request context
 export type RequestWithContext<E> = BaseContext<E> & {
   readonly ctx: RequestContext

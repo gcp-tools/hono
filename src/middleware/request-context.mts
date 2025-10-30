@@ -55,7 +55,7 @@ const decodeClaims = (
   }
 }
 
-export const context = createMiddleware<{
+export const requestContext = createMiddleware<{
   Variables: { ctx: RequestContext }
 }>(async (c, next) => {
   const headers = c.req.header()

@@ -3,7 +3,7 @@ import type { Logger } from '../lib/logger.mjs'
 import { createChildLogger } from '../lib/logger.mjs'
 import type { RequestContext } from '../lib/types.mjs'
 
-export const requestLogger = createMiddleware<{
+export const requestContextLogger = createMiddleware<{
   Variables: {
     ctx: RequestContext
     logger: Logger
@@ -21,6 +21,26 @@ export const requestLogger = createMiddleware<{
     userId: ctx.userId,
     tenantId: ctx.tenantId,
     organisationType: ctx.organisationType,
+  })
+
+  c.set('requestLogger', requestLogger)
+
+  requestLogger.info('[request] start')
+  await next()
+  requestLogger.info('[request] end')
+})
+
+export const requestLogger = createMiddleware<{
+  Variables: {
+    logger: Logger
+    requestLogger: Logger
+  }
+}>(async (c, next) => {
+  const logger = c.get('logger')
+
+  const requestLogger = createChildLogger(logger, {
+    method: c.req.method,
+    path: c.req.path,
   })
 
   c.set('requestLogger', requestLogger)

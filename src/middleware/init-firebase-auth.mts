@@ -17,7 +17,7 @@ export const initFirebaseAuth = <E,>() =>
 
     const ctx = c.get('ctx')
     const authClient = c.get('authClient')
-    const logger = c.get('logger')
+    const logger = c.get('requestLogger')
 
     if (!authClient) {
       throw new Error('authClient not found in context')

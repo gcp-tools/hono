@@ -16,7 +16,7 @@ export const initServices = <E,>() =>
     }
 
     const ctx = c.get('ctx')
-    const logger = c.get('logger')
+    const logger = c.get('requestLogger')
 
     const services = Object.fromEntries(
       Object.entries(serviceFns).map(([key, fn]) => [
