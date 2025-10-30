@@ -3,14 +3,21 @@ import { type Auth, getAuth } from 'firebase-admin/auth'
 
 let app: App | undefined
 
-export const createFirebaseAuth = (projectId: string): Auth => {
-  // Initialize app if not already initialized
+type CreateFirebaseAuthProps = {
+  projectId: string
+  apiKey: string
+  authDomain: string
+}
+
+export const createFirebaseAuth = ({
+  apiKey,
+  authDomain,
+  projectId,
+}: CreateFirebaseAuthProps): Auth => {
   if (getApps().length === 0) {
     app = initializeApp({
-      credential: cert({
-        projectId,
-        // In production, credentials come from Application Default Credentials
-      }),
+      apiKey,
+      authDomain,
       projectId,
     })
   } else {
