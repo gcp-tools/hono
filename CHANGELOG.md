@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.15.0](https://github.com/gcp-tools/hono/compare/v1.14.0...v1.15.0) (2025-11-03)
+
+### Features
+
+* adds firebase auth params ([afd2009](https://github.com/gcp-tools/hono/commit/afd200927b5be851ad454c16eb008f35509c09bf))
+
+### Chores
+
+* updates dependencies ([0cad257](https://github.com/gcp-tools/hono/commit/0cad257eeff6c1c2f13c186e8781a062977265e7))
+
 ## [1.14.0](https://github.com/gcp-tools/hono/compare/v1.13.0...v1.14.0) (2025-10-30)
 
 ### Features
