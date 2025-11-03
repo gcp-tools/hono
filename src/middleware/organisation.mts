@@ -9,9 +9,9 @@ export const organisationType = (organisationTypes: string[]) =>
       !organisationTypes.includes(ctx.organisationType)
     ) {
       return c.json(
-        { 
+        {
           code: 'FORBIDDEN',
-          message: 'Organisation type not supported'
+          message: 'Organisation type not supported',
         },
         403,
       )

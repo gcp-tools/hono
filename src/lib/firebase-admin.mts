@@ -1,23 +1,12 @@
-import { type App, cert, getApps, initializeApp } from 'firebase-admin/app'
+import { type App, getApps, initializeApp, applicationDefault } from 'firebase-admin/app'
 import { type Auth, getAuth } from 'firebase-admin/auth'
 
 let app: App | undefined
 
-type CreateFirebaseAuthProps = {
-  projectId: string
-  apiKey: string
-  authDomain: string
-}
-
-export const createFirebaseAuth = ({
-  apiKey,
-  authDomain,
-  projectId,
-}: CreateFirebaseAuthProps): Auth => {
+export const createFirebaseAuth = (projectId: string): Auth => {
   if (getApps().length === 0) {
     app = initializeApp({
-      apiKey,
-      authDomain,
+      credential: applicationDefault(),
       projectId,
     })
   } else {
