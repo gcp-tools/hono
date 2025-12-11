@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.18.1](https://github.com/gcp-tools/hono/compare/v1.18.0...v1.18.1) (2025-12-11)
+
+### Bug Fixes
+
+* correct roles type ([df5746f](https://github.com/gcp-tools/hono/commit/df5746f90cebbabd9f66c252136aca3e8b1b3a43))
+
 ## [1.18.0](https://github.com/gcp-tools/hono/compare/v1.17.0...v1.18.0) (2025-12-11)
 
 ### Features
