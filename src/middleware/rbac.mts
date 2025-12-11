@@ -21,8 +21,8 @@ export const requireRole = (roles: string[]) =>
   })
 
 type OrganisationAndRoleRequirement = {
-  role: string
-  organisationType: string[]
+  role: string[]
+  organisationType: string
 }
 
 export const requireOrgAndRole = (
@@ -34,7 +34,7 @@ export const requireOrgAndRole = (
     const { organisationType, role } = c.get('ctx')
 
     const hasPermission = requirements.some(
-      (r) => r.role === role && r.organisationType.includes(organisationType),
+      (r) => r.role.includes(role) && r.organisationType === organisationType,
     )
 
     if (!hasPermission) {
