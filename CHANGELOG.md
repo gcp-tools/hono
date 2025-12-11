@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.18.0](https://github.com/gcp-tools/hono/compare/v1.17.0...v1.18.0) (2025-12-11)
+
+### Features
+
+* change organisationType to accept array of strings in requireOrgAndRole ([c7340f8](https://github.com/gcp-tools/hono/commit/c7340f8fe09003b35223c3f33e7dffb5913a1d94))
+
 ## [1.17.0](https://github.com/gcp-tools/hono/compare/v1.16.0...v1.17.0) (2025-12-11)
 
 ### Features
