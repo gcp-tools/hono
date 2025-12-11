@@ -1,12 +1,33 @@
 import { createMiddleware } from 'hono/factory'
 import type { RequestContext } from '../lib/types.mjs'
 
-type RoleRequirement = {
+export const requireRole = (roles: string[]) =>
+  createMiddleware<{
+    Variables: { ctx: RequestContext }
+  }>(async (c, next) => {
+    const { role } = c.get('ctx')
+
+    if (!roles.includes(role)) {
+      return c.json(
+        {
+          code: 'FORBIDDEN',
+          message: 'Insufficient permissions',
+        },
+        403,
+      )
+    }
+
+    await next()
+  })
+
+type OrganisationAndRoleRequirement = {
   role: string
   organisationType: string
 }
 
-export const requires = (requirements: RoleRequirement[]) =>
+export const requireOrgAndRole = (
+  requirements: OrganisationAndRoleRequirement[],
+) =>
   createMiddleware<{
     Variables: { ctx: RequestContext }
   }>(async (c, next) => {
