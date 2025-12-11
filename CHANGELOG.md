@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.16.0](https://github.com/gcp-tools/hono/compare/v1.15.0...v1.16.0) (2025-12-11)
+
+### ⚠ BREAKING CHANGES
+
+* Multiple breaking changes to the API:
+
+- PostgresClient now returns { query, transaction } instead of single client
+- BaseContext.db.postgres is now an object with query/transaction properties
+- Removed BaseContext.db.postgresWebSocket (use postgres.transaction instead)
+- PostgresRepoFn.adapter changed from 'http'|'websocket' to 'query'|'transaction'
+- requireRole renamed to requires and now accepts { role, organisationType }[]
+- Removed init-firestore-repo middleware (use init-repo instead)
+- Removed organisation middleware
+
+New features:
+- Added BigQuery support with BigQueryRepoFn and makeBigQueryIOFn
+- Added Postgres support with NeonDB (http + serverless) and postgres.js
+- Unified init-repo middleware handles all database types
+- Simplified postgres.mts with automatic NeonDB/postgres.js detection
+
+### Features
+
+* add postgres and bigquery support with unified repo pattern ([fa5f5bb](https://github.com/gcp-tools/hono/commit/fa5f5bb5c9d27b3dd66e757a348aad093b1db539))
+
 ## [1.15.0](https://github.com/gcp-tools/hono/compare/v1.14.0...v1.15.0) (2025-11-03)
 
 ### Features
