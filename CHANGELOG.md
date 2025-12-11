@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.17.0](https://github.com/gcp-tools/hono/compare/v1.16.0...v1.17.0) (2025-12-11)
+
+### Features
+
+* add requireRole and rename requires to requireOrgAndRole ([436a75b](https://github.com/gcp-tools/hono/commit/436a75b7812d38aa6dff28aa991658ec08484065))
+
 ## [1.16.0](https://github.com/gcp-tools/hono/compare/v1.15.0...v1.16.0) (2025-12-11)
 
 ### ⚠ BREAKING CHANGES
