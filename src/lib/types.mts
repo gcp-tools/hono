@@ -1,13 +1,21 @@
 import type { Firestore } from '@google-cloud/firestore'
 import type { auth } from 'firebase-admin'
+import type { BigQueryClient } from './bigquery.mjs'
 import type { Logger } from './logger.mjs'
+import type { PostgresClient } from './postgres.mjs'
 
 export type Auth = auth.Auth
+export type { BigQueryClient, PostgresClient }
+
 // Application dependencies available in Hono context
 export type BaseContext<E> = {
   readonly env: E
   readonly logger: Logger
-  readonly db: Firestore
+  readonly db: {
+    firestore?: Firestore
+    postgres?: PostgresClient
+    bigquery?: BigQueryClient
+  }
   readonly authClient?: Auth
 }
 
@@ -33,7 +41,7 @@ export type RequestWithContext<E> = BaseContext<E> & {
 
 export type RepoContext = {
   // biome-ignore lint/suspicious/noExplicitAny: it doesn't care about the type at this juncture
-  readonly repoFns: Record<string, FirestoreRepoFn<any, any>>
+  readonly repoFns: Record<string, RepoFn<any, any>>
   // biome-ignore lint/suspicious/noExplicitAny: generic record of wrapped functions
   readonly repo: Record<string, (args: any) => Promise<Result<any>>>
 }
@@ -83,12 +91,40 @@ export type AppError = {
   data?: unknown
 }
 
-// Firestore repository functions
-export type FirestoreRepoFn<A, R> = (
-  db: Firestore,
-  ctx: RequestContext,
-  logger: Logger,
-) => (args: A) => Promise<Result<R>>
+// Repository function discriminated union types
+export type FirestoreRepoFn<A, R> = {
+  dbType: 'firestore'
+  fn: (
+    db: Firestore,
+    ctx: RequestContext,
+    logger: Logger,
+  ) => (args: A) => Promise<Result<R>>
+}
+
+export type PostgresRepoFn<A, R> = {
+  dbType: 'postgres'
+  adapter?: 'query' | 'transaction' // Which adapter to use (defaults to 'query')
+  fn: (
+    db: PostgresClient['query'] | PostgresClient['transaction'],
+    ctx: RequestContext,
+    logger: Logger,
+  ) => (args: A) => Promise<Result<R>>
+}
+
+export type BigQueryRepoFn<A, R> = {
+  dbType: 'bigquery'
+  fn: (
+    db: BigQueryClient,
+    ctx: RequestContext,
+    logger: Logger,
+  ) => (args: A) => Promise<Result<R>>
+}
+
+// Union type for all repo functions
+export type RepoFn<A, R> =
+  | FirestoreRepoFn<A, R>
+  | PostgresRepoFn<A, R>
+  | BigQueryRepoFn<A, R>
 
 // biome-ignore lint/suspicious/noExplicitAny: it doesn't care about the type at this juncture
 export type WrappedFirestoreRepoFn<F extends FirestoreRepoFn<any, any>> =

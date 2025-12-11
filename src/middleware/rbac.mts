@@ -1,14 +1,22 @@
 import { createMiddleware } from 'hono/factory'
 import type { RequestContext } from '../lib/types.mjs'
 
-export const requireRole = (requiredRoles: string[]) =>
+type RoleRequirement = {
+  role: string
+  organisationType: string
+}
+
+export const requires = (requirements: RoleRequirement[]) =>
   createMiddleware<{
     Variables: { ctx: RequestContext }
-    // //@ts-expect-error TS7030 - middleware doesn't require explicit return
   }>(async (c, next) => {
-    const ctx = c.get('ctx')
+    const { organisationType, role } = c.get('ctx')
 
-    if (!requiredRoles.includes(ctx.role)) {
+    const hasPermission = requirements.some(
+      (r) => r.role === role && r.organisationType === organisationType,
+    )
+
+    if (!hasPermission) {
       return c.json(
         {
           code: 'FORBIDDEN',
