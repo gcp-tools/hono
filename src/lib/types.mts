@@ -86,6 +86,7 @@ export type AppError = {
     | 'VALIDATION_ERROR'
     | 'UNAUTHORIZED'
     | 'FORBIDDEN'
+    | 'DATA_CORRUPTION'
   message: string
   cause?: Error | unknown
   data?: unknown
