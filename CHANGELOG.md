@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.19.0](https://github.com/gcp-tools/hono/compare/v1.18.1...v1.19.0) (2025-12-12)
+
+### Features
+
+* checks for conflict errors ([10151c1](https://github.com/gcp-tools/hono/commit/10151c1f22d308e74635a83b8d1194f3a66a3cbe))
+
 ## [1.18.1](https://github.com/gcp-tools/hono/compare/v1.18.0...v1.18.1) (2025-12-11)
 
 ### Bug Fixes
