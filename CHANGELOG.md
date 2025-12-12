@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.20.0](https://github.com/gcp-tools/hono/compare/v1.19.0...v1.20.0) (2025-12-12)
+
+### Features
+
+* data corruption error ([6beb192](https://github.com/gcp-tools/hono/commit/6beb192d203e7330e44af75424efd81ccd8cfdaf))
+
 ## [1.19.0](https://github.com/gcp-tools/hono/compare/v1.18.1...v1.19.0) (2025-12-12)
 
 ### Features
