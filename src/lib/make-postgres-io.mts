@@ -1,5 +1,4 @@
 import { backOff } from 'exponential-backoff'
-import { ZodError } from 'zod'
 import type { Logger } from './logger.mjs'
 import type { Result } from './types.mjs'
 
@@ -45,6 +44,12 @@ export const isPostgresRetryableError = (
   )
 }
 
+// PostgreSQL unique/duplicate constraint violation
+export const isPostgresUniqueViolation = (
+  // biome-ignore lint/suspicious/noExplicitAny: postgres error shape
+  error: any,
+): boolean => error?.code === '23505'
+
 export const makePostgresIOFn =
   <A, R>(fn: (args: A) => Promise<Result<R>>, logger: Logger) =>
   async (args: A): Promise<Result<R>> => {
@@ -56,14 +61,14 @@ export const makePostgresIOFn =
       return result
     } catch (cause) {
       logger.error({ error: cause }, '[postgres-io] error')
-      if (cause instanceof ZodError) {
+      if (isPostgresUniqueViolation(cause)) {
         return {
           ok: false,
           error: {
             cause,
-            code: 'VALIDATION_ERROR',
+            code: 'CONFLICT',
             data: args,
-            message: 'Postgres data validation error',
+            message: 'Duplicate key violation',
           },
         }
       }
