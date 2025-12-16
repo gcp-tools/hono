@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.21.0](https://github.com/gcp-tools/hono/compare/v1.20.0...v1.21.0) (2025-12-16)
+
+### Features
+
+* updates drizzle orm ([9f6ecf5](https://github.com/gcp-tools/hono/commit/9f6ecf5d70bf289da15ebd0367083ebc4610612d))
+
 ## [1.20.0](https://github.com/gcp-tools/hono/compare/v1.19.0...v1.20.0) (2025-12-12)
 
 ### Features
