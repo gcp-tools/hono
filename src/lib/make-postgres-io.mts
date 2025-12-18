@@ -50,6 +50,28 @@ export const isPostgresUniqueViolation = (
   error: any,
 ): boolean => error?.code === '23505'
 
+// PostgreSQL transaction state errors
+export const isPostgresTransactionError = (
+  // biome-ignore lint/suspicious/noExplicitAny: postgres error shape
+  error: any,
+): boolean => {
+  if (error?.code) {
+    // PostgreSQL error codes for transaction state issues
+    // 25P01: no_active_sql_transaction - Operation attempted outside a transaction
+    // 25P02: in_failed_sql_transaction - Operation attempted in a failed transaction
+    const transactionErrorCodes = ['25P01', '25P02']
+    return transactionErrorCodes.includes(error.code)
+  }
+  // Check for specific transaction state error messages as fallback
+  const message = error?.message?.toLowerCase() || ''
+  return (
+    message.includes('no active sql transaction') ||
+    message.includes('in failed sql transaction') ||
+    message.includes('current transaction is aborted') ||
+    message.includes('transaction is aborted')
+  )
+}
+
 export const makePostgresIOFn =
   <A, R>(fn: (args: A) => Promise<Result<R>>, logger: Logger) =>
   async (args: A): Promise<Result<R>> => {
@@ -61,6 +83,25 @@ export const makePostgresIOFn =
       return result
     } catch (cause) {
       logger.error({ error: cause }, '[postgres-io] error')
+      // Check for transaction errors first - these indicate unrecoverable transaction state
+      if (isPostgresTransactionError(cause)) {
+        const errorMessage =
+          cause instanceof Error ? cause.message : 'Transaction state error'
+        logger.error(
+          { error: cause, transactionError: true },
+          '[postgres-io] transaction error',
+        )
+        return {
+          ok: false,
+          error: {
+            cause,
+            code: 'DATA_CORRUPTION',
+            data: args,
+            message: errorMessage,
+          },
+        }
+      }
+      // Check for unique constraint violations
       if (isPostgresUniqueViolation(cause)) {
         return {
           ok: false,
@@ -72,6 +113,7 @@ export const makePostgresIOFn =
           },
         }
       }
+      // Generic error handling
       return {
         ok: false,
         error: {
