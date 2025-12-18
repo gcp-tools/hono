@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.23.0](https://github.com/gcp-tools/hono/compare/v1.22.0...v1.23.0) (2025-12-18)
+
+### Features
+
+* updates postgres wrapper ([b795283](https://github.com/gcp-tools/hono/commit/b795283771e41c5ef01e178e9df3b63099eebf1b))
+
 ## [1.22.0](https://github.com/gcp-tools/hono/compare/v1.21.0...v1.22.0) (2025-12-16)
 
 ### Features
